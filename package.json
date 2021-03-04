@@ -1,0 +1,29 @@
+{
+  "name": "pris-types",
+  "version": "0.0.1-alpha.1",
+  "source": "src/index.js",
+  "main": "dist/index.js",
+  "module": "./dist/index.module.js",
+  "unpkg": "./dist/index.umd.js",
+  "scripts": {
+    "build": "microbundle --target node",
+    "dev": "microbundle watch --target node",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@babel/generator": "^7.13.0",
+    "@babel/parser": "^7.13.4",
+    "ast-to-literal": "0.0.3",
+    "babel-extract-named-export": "0.0.3"
+  },
+  "devDependencies": {
+    "microbundle": "^0.13.0"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
