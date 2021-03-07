@@ -8,7 +8,7 @@ Obviously, the name <code>pris-types</code> is derived from <code>prop-types</co
 ### Overview
 
 The core of <code>pris-types</code> is a simple Babel plugin that runs everytime your slices change.
-What it does is quite simple: it looks for a <code>Model</code> key and runs the function it finds.
+What it does is quite simple: for each slice, it looks for a <code>Model</code> key and runs the function it finds.
 If the result is a valid Prismic JSON model, it calls the local builder and saves everything to FileSystem.
 
 <pre>

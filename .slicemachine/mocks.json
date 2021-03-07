@@ -1,0 +1,26 @@
+{
+  "ExampleSlice": {
+    "defaultVariation": {
+      "primary": {
+        "description": {
+          "config": {
+            "patternType": "HEADING",
+            "blocks": 1
+          }
+        }
+      },
+      "items": {}
+    },
+    "anotherVariation": {
+      "primary": {
+        "description": {
+          "config": {
+            "patternType": "HEADING",
+            "blocks": 1
+          }
+        }
+      },
+      "items": {}
+    }
+  }
+}

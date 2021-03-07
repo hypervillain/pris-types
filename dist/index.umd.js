@@ -1,12 +1,14 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@babel/generator'), require('babel-extract-named-export')) :
-  typeof define === 'function' && define.amd ? define(['exports', '@babel/generator', 'babel-extract-named-export'], factory) :
-  (global = global || self, factory(global.prisTypes = {}, global.generate, global.babelExtractNamedExport));
-}(this, (function (exports, generate, extract) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('randomcolor'), require('@babel/generator'), require('babel-extract-named-export'), require('babel-extract-named-export/babel'), require('babel-plugin-transform-remove-imports')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'randomcolor', '@babel/generator', 'babel-extract-named-export', 'babel-extract-named-export/babel', 'babel-plugin-transform-remove-imports'], factory) :
+  (global = global || self, factory(global.prisTypes = {}, global.randomcolor, global.generate, global.babelExtractNamedExport, global.babel, global.babelPluginTransformRemoveImports));
+}(this, (function (exports, randomColor, generate, extract, babel, removeImports) {
   function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
+  var randomColor__default = /*#__PURE__*/_interopDefaultLegacy(randomColor);
   var generate__default = /*#__PURE__*/_interopDefaultLegacy(generate);
   var extract__default = /*#__PURE__*/_interopDefaultLegacy(extract);
+  var removeImports__default = /*#__PURE__*/_interopDefaultLegacy(removeImports);
 
   function _extends() {
     _extends = Object.assign || function (target) {
@@ -41,52 +43,129 @@
     return target;
   }
 
-  const _handleFields = (fields = {}) => {
-    return Object.entries(fields).reduce((acc, [key, fn]) => {
-      const depth = fn.toString().split('=>').length - 1;
+  const handleField = ({
+    zone,
+    mocks,
+    fieldKey,
+    variation
+  }) => {
+    var _mockVariations$varia, _mockVariations$varia2, _common$zone;
+
+    const {
+      id: variationId
+    } = variation;
+
+    const {
+      __common = {}
+    } = mocks,
+          mockVariations = _objectWithoutPropertiesLoose(mocks, ["__common"]);
+
+    if (mockVariations != null && (_mockVariations$varia = mockVariations[variationId]) != null && (_mockVariations$varia2 = _mockVariations$varia[zone]) != null && _mockVariations$varia2[fieldKey]) {
+      return mockVariations[variationId][zone][fieldKey];
+    }
+
+    if ((_common$zone = __common[zone]) != null && _common$zone[fieldKey]) {
+      return __common[zone][fieldKey];
+    }
+  };
+  const handleVariation = (variation, zone, mocks) => {
+    const mockedFields = Object.entries(variation.primary).reduce((acc, [key]) => {
+      const maybeField = handleField({
+        zone,
+        mocks,
+        variation,
+        fieldKey: key
+      });
+
+      if (maybeField) {
+        return _extends({}, acc, {
+          [key]: maybeField
+        });
+      }
+
+      return acc;
+    }, {});
+    return Object.keys(mockedFields).length ? mockedFields : null;
+  };
+  const handle = (mocks, model) => {
+    return model.variations.reduce((acc, variation) => {
+      const maybePrimary = handleVariation(variation, 'primary', mocks);
+      const maybeItems = handleVariation(variation, 'items', mocks);
       return _extends({}, acc, {
-        [key]: depth > 1 ? fn({})(key) : fn(key)
+        [variation.id]: {
+          primary: maybePrimary || {},
+          items: maybeItems || {}
+        }
       });
     }, {});
   };
 
-  const variation = zones => {
-    const {
-      primary,
-      items
-    } = zones;
-    return {
-      primary: _handleFields(primary),
-      items: _handleFields(items)
-    };
+  var index = {
+    __proto__: null,
+    handleField: handleField,
+    handleVariation: handleVariation,
+    handle: handle
   };
 
-  const shape = obj => {
-    const {
-      __common = {}
-    } = obj,
-          variations = _objectWithoutPropertiesLoose(obj, ["__common"]);
+  const createMockContent = fn => () => ({
+    content: fn()
+  });
+  const hyphenateRE = /\B([A-Z])/g;
+  const hyphenate = str => str.replace(hyphenateRE, "-$1").toLowerCase();
 
-    return {
-      title: 'My Slice',
-      description: 'Hi!',
-      variations: Object.entries(variations).reduce((acc, [key, variation]) => {
-        return [...acc, _extends({
-          id: key
-        }, variation, {
-          primary: _extends({}, variation.primary, _handleFields(__common.primary)),
-          items: _extends({}, variation.items, _handleFields(__common.items))
-        })];
-      }, [])
-    };
-  };
+  const Boolean = ({
+    label,
+    placeholderFalse,
+    placeholderTrue,
+    defaultValue
+  }) => fieldName => ({
+    type: 'Boolean',
+    config: {
+      label: label || `${fieldName} value`,
+      placeholder_true: placeholderTrue || 'true',
+      placeholder_false: placeholderFalse || 'false',
+      default_value: defaultValue != undefined ? defaultValue : true
+    }
+  });
 
-  const ALL_OPTIONS = ['paragraph', '...'];
+  Boolean.Rand = createMockContent(() => Math.random() > .5 ? true : false);
+  Boolean.True = createMockContent(() => true);
+  Boolean.False = createMockContent(() => false);
+
+  const Color = ({
+    label = null,
+    placeholder = null
+  }) => fieldName => ({
+    type: 'Color',
+    config: {
+      label: label || `${fieldName} Color`,
+      placeholder: placeholder || `${fieldName} value`
+    }
+  });
+
+  Color.Rand = createMockContent(() => randomColor__default['default']());
+  Color.Dark = createMockContent(() => randomColor__default['default']({
+    luminosity: 'dark'
+  }));
+  Color.Light = createMockContent(() => randomColor__default['default']({
+    luminosity: 'light'
+  }));
+
+  var RichTextOptionsEnum;
+
+  (function (RichTextOptionsEnum) {
+    RichTextOptionsEnum["h1"] = "heading1";
+    RichTextOptionsEnum["h2"] = "heading2";
+    RichTextOptionsEnum["h3"] = "heading3";
+    RichTextOptionsEnum["paragraph"] = "paragraph";
+  })(RichTextOptionsEnum || (RichTextOptionsEnum = {}));
+
+  const RichTextOptions = Object.values(RichTextOptionsEnum);
 
   const RichText = ({
-    placeholder,
+    placeholder = null,
     multi = false,
-    options = ALL_OPTIONS
+    options = RichTextOptions
   }) => fieldName => ({
     type: 'StructuredText',
     config: {
@@ -95,56 +174,127 @@
     }
   });
 
-  const Title = params => fieldName => RichText(_extends({}, params, {
-    options: ['heading1', 'heading2']
-  }))(fieldName);
-
-  const Color = ({
-    placeholder
-  }) => fieldName => ({
-    type: 'Color',
+  const createConfig = patternType => (blocks = 1) => ({
     config: {
-      placeholder: placeholder || `${fieldName} field`
+      patternType,
+      blocks
     }
   });
 
-  const Types = {
-    shape,
-    variation,
-    RichText,
-    Title,
-    Color
+  RichText.Paragraph = createConfig('PARAGRAPH');
+  RichText.Heading = createConfig('HEADING');
+  RichText.Story = createConfig('STORY');
+
+  var TitleOptionsEnum;
+
+  (function (TitleOptionsEnum) {
+    TitleOptionsEnum["h1"] = "heading1";
+    TitleOptionsEnum["h2"] = "heading2";
+    TitleOptionsEnum["h3"] = "heading3";
+    TitleOptionsEnum["h4"] = "heading4";
+    TitleOptionsEnum["h5"] = "heading5";
+    TitleOptionsEnum["b"] = "bold";
+    TitleOptionsEnum["em"] = "em";
+  })(TitleOptionsEnum || (TitleOptionsEnum = {}));
+
+  const TitleOptions = Object.values(TitleOptionsEnum);
+
+  const Title = ({
+    placeholder = null,
+    multi = false,
+    options = TitleOptions
+  }) => fieldName => RichText({
+    placeholder,
+    multi,
+    options
+  })(fieldName);
+
+  Object.entries(RichText).forEach(([key, fn]) => {
+    Title[key] = fn;
+  });
+
+  const _handleFields = (fields = {}) => {
+    return Object.entries(fields).reduce((acc, [key, fn]) => {
+      const depth = fn.toString().split('=>').length - 1;
+      return _extends({}, acc, {
+        // @ts-ignore halp!
+        [key]: depth > 1 ? fn({})(key) : fn(key)
+      });
+    }, {});
   };
 
-  // import fs from 'fs'
+  const variation = zones => {
+    const {
+      primary,
+      items,
+      id
+    } = zones;
+    return _extends({}, id ? {
+      id
+    } : null, {
+      primary: _handleFields(primary),
+      items: _handleFields(items)
+    });
+  };
+  const shape = obj => {
+    const {
+      __common = {},
+      __meta
+    } = obj,
+          variations = _objectWithoutPropertiesLoose(obj, ["__common", "__meta"]);
+
+    const {
+      title,
+      description
+    } = __meta;
+    return {
+      title,
+      description,
+      variations: Object.entries(variations).reduce((acc, [key, variation]) => {
+        return [...acc, {
+          id: key,
+          primary: _extends({}, variation.primary, _handleFields(__common.primary)),
+          items: _extends({}, variation.items, _handleFields(__common.items))
+        }];
+      }, [])
+    };
+  };
+
+  var Types = {
+    __proto__: null,
+    Boolean: Boolean,
+    Color: Color,
+    RichText: RichText,
+    Title: Title,
+    shape: shape,
+    variation: variation
+  };
 
   function validate(Model) {
-    if (!Model || !Model.type || Model.type !== 'CallExpression') {
+    if (!Model || !Model.type || ['CallExpression', 'ObjectExpression'].indexOf(Model.type) === -1) {
       return false;
     }
 
     return true;
   }
+  /** Extract Expression from file and validate it */
 
-  function createEval(node, build) {
-    const {
-      code
-    } = generate__default['default'](node);
-    const req = `pris-types/dist/index.${build ? `${build}.` : ''}js`;
-    const str = `
-    var dir = "${__dirname}"
-    const PrisTypes = require("${req}").PrisTypes;
-    return ${code}
-  `;
-    return str;
-  }
 
-  const extractor = async code => {
+  const extractModel = async (code, filename, {
+    plugins = [],
+    presets = []
+  } = babel.react) => {
     const {
-      Model
+      Model,
+      Mocks
     } = await extract__default['default'](code, {
-      search: ['Model'],
-      fallback: true
+      filename,
+      search: ['Model', 'Mocks'],
+      useToJs: false,
+      plugins: [[removeImports__default['default'], {
+        test: 'pris-types'
+      }], ...plugins],
+      presets
     });
 
     if (!validate(Model)) {
@@ -154,23 +304,60 @@
     }
 
     return {
-      Model
+      Model,
+      Mocks
     };
   };
 
-  const evaluator = (Model, {
-    build = ''
+  const prisGenerate = (Model, Mock, sliceName, {
+    requirePath,
+    build
   } = {
     build: ''
   }) => {
-    const code = createEval(Model, build);
-    const slice = eval('(function() {' + code + '}())');
-    return slice;
+    const code = {
+      model: generate__default['default'](Model).code,
+      mock: generate__default['default'](Mock).code
+    };
+    const req = requirePath || `pris-types/dist/index.${build ? `${build}.` : ''}js`;
+    const str = `
+    const { PrisTypes, PrisMocks } = require("${req}")
+    const { ${Object.keys(Types).join(', ')} } = PrisTypes
+    const __prisTypesModel = ${code.model}
+
+    const __prisTypesModelWithId = {
+      id: "${hyphenate(sliceName)}",
+      ...__prisTypesModel
+    }
+
+    ${!code.mock ? 'return { model: __prisTypesModelWithId}' : `
+      const __prisMocksMock = PrisMocks.handle(${code.mock}, __prisTypesModel)
+      return {
+        model: __prisTypesModelWithId,
+        mockConfig: __prisMocksMock
+      }
+    `}
+  `;
+
+    try {
+      return eval('(function() {' + str + '}())');
+    } catch (e) {
+      console.error(e);
+      return {
+        error: e
+      };
+    }
   };
 
+  var handlers = {
+    __proto__: null,
+    extractModel: extractModel,
+    generate: prisGenerate
+  };
+
+  exports.PrisMocks = index;
   exports.PrisTypes = Types;
-  exports.evaluator = evaluator;
-  exports.extractor = extractor;
+  exports.handlers = handlers;
 
 })));
 //# sourceMappingURL=index.umd.js.map

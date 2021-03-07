@@ -35,4 +35,20 @@ export const WithVariations = {
   `
 }
 
-export default [DefaultModel, WithVariations]
+export const AlterSyntax = {
+  title: 'Alternative Syntax',
+  code: `export const Model = {
+  title: 'My Cool Slice',
+  description: 'How are you?',
+  variations: [PrisTypes.variation({
+    id: 'my-variation',
+    primary: {
+      description: PrisTypes.RichText({
+        placeholder: "short length text please"
+      }),
+    },
+  })]
+}`
+}
+
+export default [DefaultModel, WithVariations, AlterSyntax]

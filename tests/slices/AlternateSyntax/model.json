@@ -1,0 +1,27 @@
+{
+  "id": "alternate-syntax",
+  "title": "My Cool Slice",
+  "description": "How are you?",
+  "variations": [
+    {
+      "id": "my-variation",
+      "primary": {
+        "title": {
+          "type": "StructuredText",
+          "config": {
+            "single": "heading1,heading2,heading3,heading4,heading5,bold,em",
+            "placeholder": "title field"
+          }
+        },
+        "description": {
+          "type": "StructuredText",
+          "config": {
+            "single": "heading1,heading2,heading3,paragraph",
+            "placeholder": "short length text please, ok?"
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+# Frequently Asked Questions
+
+To be honest, I haven't been asked a lot of questions regarding `pris-types`.
+So, this page is mostly made of questions I asked myself during development.
+
+### Can I delete my model on build? How?
+
+You can delete the Model key and imports on build.
+
+### Can I destructure PrisTypes?
+
+Before running your function, the module requires `PrisTypes` and destructures all its fields:
+
+```javascript
+const { PrisTypes, PrisMocks } = require('pris-types')
+const { Boolean, RichText, /* ... */ }  = PrisTypes
+````
+
+This means that instead of calling `PrisTypes.foo` you can import field types separately too:
+
+```javascript
+import { PrisTypes: { RichText, Boolean } } from 'pris-types'
+
+const title = RichText({ options: ['heading1'] })
+````
+
+### Using custom functions in Model returns `undefined`. Why?
+
+My guess is you did something like this, thinking it woud work:
+
+```javascript
+import { PrisTypes } from 'pris-types'
+const randomString = () => `...`
+
+const bool = PrisTypes.Boolean({ placeholder: randomString() })
+````
+
+Unfortunately, `pris-types` evaluates your code in a certain context
+and at the moment, this context cannot be extended.
+
+<div style={{ marginBottom: '36px'}} />

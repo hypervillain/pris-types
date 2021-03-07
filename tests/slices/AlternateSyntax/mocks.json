@@ -1,0 +1,23 @@
+[
+  {
+    "id": "my-variation",
+    "primary": {
+      "title": [
+        {
+          "type": "heading1",
+          "text": "Expedite customized technologies",
+          "spans": []
+        }
+      ],
+      "description": [
+        {
+          "type": "paragraph",
+          "text": "Qui occaecat non in cupidatat ex reprehenderit minim. Officia magna qui amet ex occaecat incididunt proident voluptate elit pariatur.",
+          "spans": []
+        }
+      ]
+    },
+    "items": [],
+    "slice_type": "alternate_syntax"
+  }
+]

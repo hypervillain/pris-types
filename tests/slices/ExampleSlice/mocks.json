@@ -1,0 +1,53 @@
+[
+  {
+    "id": "defaultVariation",
+    "primary": {
+      "description": [
+        {
+          "type": "heading1",
+          "text": "Drive killer web services",
+          "spans": []
+        }
+      ]
+    },
+    "items": [
+      {
+        "color": "#fd9efd"
+      },
+      {
+        "color": "#9433d0"
+      },
+      {
+        "color": "#b12236"
+      },
+      {
+        "color": "#b3902a"
+      }
+    ],
+    "slice_type": "example_slice"
+  },
+  {
+    "id": "anotherVariation",
+    "primary": {
+      "description": [
+        {
+          "type": "paragraph",
+          "text": "Commodo sit labore do id enim.",
+          "spans": []
+        }
+      ]
+    },
+    "items": [
+      {
+        "color": "#9e4605"
+      },
+      {
+        "color": "#2a07c3"
+      },
+      {
+        "color": "#67e78d"
+      }
+    ],
+    "slice_type": "example_slice"
+  }
+]

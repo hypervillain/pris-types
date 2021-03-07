@@ -1,3 +1,13 @@
+
+
+const RichText = ({ placeholder, multi = false, options = ALL_OPTIONS }) => (fieldName) => ({
+  type: 'StructuredText',
+  config: {
+    [multi ? 'multi' : 'single']: options.join(','),
+    placeholder: placeholder || `${fieldName} field`
+  }
+})
+
 const _handleFields = (fields = {}) => {
   return Object.entries(fields).reduce((acc, [key, fn]) => {
     const depth = fn.toString().split('=>').length - 1
@@ -27,7 +37,7 @@ const shape = (obj) => {
         ...acc,
         {
           id: key,
-          ...variation,
+          // ...variation,
           primary: {
             ...variation.primary,
             ..._handleFields(__common.primary)
@@ -44,14 +54,6 @@ const shape = (obj) => {
 }
 
 const ALL_OPTIONS = ['paragraph', '...']
-
-const RichText = ({ placeholder, multi = false, options = ALL_OPTIONS }) => (fieldName) => ({
-  type: 'StructuredText',
-  config: {
-    [multi ? 'multi' : 'single']: options.join(','),
-    placeholder: placeholder || `${fieldName} field`
-  }
-})
 
 const Title = (params) => (fieldName) => RichText({ ...params, options: ['heading1', 'heading2' ]})(fieldName)
 

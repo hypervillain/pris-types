@@ -1,0 +1,16 @@
+[
+  {
+    "id": "my-variation",
+    "primary": {
+      "description": [
+        {
+          "type": "paragraph",
+          "text": "Cillum ullamco voluptate anim do consequat dolore nostrud. Veniam et cillum adipisicing fugiat consectetur occaecat labore anim consectetur voluptate culpa in.",
+          "spans": []
+        }
+      ]
+    },
+    "items": [],
+    "slice_type": "no_mocks"
+  }
+]

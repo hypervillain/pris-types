@@ -10,8 +10,7 @@ import {
 const routes = [
   { name: 'Introduction', path: '/' },
   { name: 'Live Preview', path: '/live' },
-  { name: 'Components', path: '/components' },
-  { name: 'Button', path: '/components/Button' },
+  { name: 'FAQ', path: '/faq' },
 ]
 
 const components = {
@@ -39,8 +38,6 @@ export default class MyApp extends App {
       headManager,
       ...props
     } = this.props
-
-    console.log({ page })
 
     return (
       <Layout

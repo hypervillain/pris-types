@@ -5,12 +5,14 @@ import { Flex, Button } from '../components'
 
 import Models from '../src/models'
 
+import { PrisTypes } from 'pris-types'
+
 const DisplayModels = ({ models, setModel }) => {
   return (
     <Flex>
       {
         models.map(({ title, code }) => (
-          <Button onClick={() => setModel(code)}>
+          <Button key={title} onClick={() => setModel(code)}>
             Use { title }
           </Button>
         ))
@@ -51,13 +53,13 @@ export default function Live2() {
 
   return (
     <main>
-      <h1>Live Editor</h1>
+      <h1>Live Editor (wip)</h1>
       <p>
         Get an idea on how it feels to write Prismic models using <code>pris-types</code>! Well, minor
         linting, TypeScript support and auto-save of your model...
       </p>
       <p>
-        Make sure you  <code>export const Model</code> somewhere, use <code>PrisTypes.shape</code> and
+        Make sure you  <code>export const Model</code> somewhere, use <code>PrisTypes.shape</code> or the aternate syntax and
         preview the result. Looks good? What you see here is what you would get in a real-world, Prismic project ✌️
       </p>
       <DisplayModels models={Models} setModel={setNewModel} />
@@ -65,14 +67,10 @@ export default function Live2() {
         code={code}
         scope={{
             // yeah, I know
-            PrisTypes: {
-              shape: (code) => code,
-              variation: (code) => code,
-              Title: (code) => code,
-              RichText: (code) => code,
-              Color: (code) => code,
-              
-            }
+            PrisTypes: Object.keys(PrisTypes).reduce((acc, key) => ({
+              ...acc,
+              [key]: (c) => c
+            }), {})
           }}
         transformCode={code => {
           setCode(code)
@@ -86,7 +84,7 @@ export default function Live2() {
             minHeight: '200px',
             background: '#F7F7F7',
             padding: '16px',
-            marginBottom: '32px'
+            margin: '24px 0 36px'
           }}
         >
           {
