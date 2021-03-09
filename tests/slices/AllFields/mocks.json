@@ -1,0 +1,44 @@
+[
+  {
+    "id": "defaultVariation",
+    "primary": {
+      "bool": false,
+      "color": "#adf47a",
+      "date": "2012-03-10",
+      "geo": {
+        "latitude": 48.8841267,
+        "longitude": 2.3300579
+      },
+      "img": {
+        "dimensions": {
+          "width": "500",
+          "height": "500"
+        },
+        "alt": "Placeholder image",
+        "copyright": null,
+        "url": "https://images.unsplash.com/photo-1591012911207-0dbac31f37da?w=500&h=500&fit=crop"
+      },
+      "doc": {
+        "link_type": "Web",
+        "url": "https://prismic.io"
+      },
+      "link": {
+        "link_type": "Web",
+        "url": "https://slicemachine.dev"
+      },
+      "num": "2017-05-29",
+      "multi": [
+        {
+          "type": "heading1",
+          "text": "Harness dot-com technologies",
+          "spans": []
+        }
+      ],
+      "select": "11",
+      "txt": "evolve sticky interfaces",
+      "tmstmp": "2014-06-22T21:17:14.163Z"
+    },
+    "items": [],
+    "slice_type": "all_fields"
+  }
+]

@@ -1,15 +1,10 @@
 import randomColor from 'randomcolor'
 import { createMockContent } from '../utils'
 
-import { DefaultFieldProps, DefaultFieldConfig } from '../utils/types'
-
-interface ColorPayload {
-  type: String,
-  config: DefaultFieldConfig
-}
+import { DefaultFieldProps, DefaultPayload } from '../utils/types'
 
 const Color = ({ label = null, placeholder = null }: DefaultFieldProps) =>
-(fieldName: String): ColorPayload => ({
+(fieldName: String): DefaultPayload => ({
   type: 'Color',
   config: {
     label: label || `${fieldName} Color`,

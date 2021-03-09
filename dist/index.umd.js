@@ -1,8 +1,8 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('randomcolor'), require('@babel/generator'), require('babel-extract-named-export'), require('babel-extract-named-export/babel'), require('babel-plugin-transform-remove-imports')) :
-  typeof define === 'function' && define.amd ? define(['exports', 'randomcolor', '@babel/generator', 'babel-extract-named-export', 'babel-extract-named-export/babel', 'babel-plugin-transform-remove-imports'], factory) :
-  (global = global || self, factory(global.prisTypes = {}, global.randomcolor, global.generate, global.babelExtractNamedExport, global.babel, global.babelPluginTransformRemoveImports));
-}(this, (function (exports, randomColor, generate, extract, babel, removeImports) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('randomcolor'), require('@babel/generator'), require('babel-extract-named-export'), require('babel-extract-named-export/babel/react'), require('babel-plugin-transform-remove-imports')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'randomcolor', '@babel/generator', 'babel-extract-named-export', 'babel-extract-named-export/babel/react', 'babel-plugin-transform-remove-imports'], factory) :
+  (global = global || self, factory(global.prisTypes = {}, global.randomcolor, global.generate, global.babelExtractNamedExport, global.react, global.babelPluginTransformRemoveImports));
+}(this, (function (exports, randomColor, generate, extract, react, removeImports) {
   function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
   var randomColor__default = /*#__PURE__*/_interopDefaultLegacy(randomColor);
@@ -121,7 +121,7 @@
   }) => fieldName => ({
     type: 'Boolean',
     config: {
-      label: label || `${fieldName} value`,
+      label: label || `${fieldName} Boolean`,
       placeholder_true: placeholderTrue || 'true',
       placeholder_false: placeholderFalse || 'false',
       default_value: defaultValue != undefined ? defaultValue : true
@@ -151,24 +151,159 @@
     luminosity: 'light'
   }));
 
+  const _Date = ({
+    label = null,
+    placeholder = null
+  }) => fieldName => ({
+    type: 'Date',
+    config: {
+      label: label || `${fieldName} Date`,
+      placeholder: placeholder || `${fieldName} value`
+    }
+  });
+
+  _Date.Now = createMockContent(() => new Date().toISOString().split('T')[0]);
+  _Date.Future = createMockContent(() => {
+    let d = new Date();
+    d.setDate(d.getDate() + 7);
+    return d.toISOString().split('T')[0];
+  });
+  _Date.Past = createMockContent(() => {
+    let d = new Date();
+    d.setDate(d.getDate() - 7);
+    return d.toISOString().split('T')[0];
+  });
+
+  const GeoPoint = ({
+    label = null,
+    placeholder = null
+  }) => fieldName => ({
+    type: 'GeoPoint',
+    config: {
+      label: label || `${fieldName} GeoPoint`,
+      placeholder: placeholder || `${fieldName} value`
+    }
+  });
+
+  const parseString = (str, name = null) => {
+    const [width, height] = str.split('x');
+    return _extends({}, name ? {
+      name
+    } : null, {
+      height,
+      width
+    });
+  };
+
+  const Image = (_ref) => {
+    let {
+      label = null,
+      constraint = "500x500"
+    } = _ref,
+        thumbnails = _objectWithoutPropertiesLoose(_ref, ["label", "constraint"]);
+
+    return () => ({
+      type: 'Image',
+      config: {
+        constraint: parseString(constraint),
+        thumbnails: Object.entries(thumbnails || {}).reduce((acc, [key, str]) => [...acc, parseString(str, key)], [])
+      }
+    });
+  };
+
+  const Link = ({
+    label,
+    placeholder,
+    allowTargetBlank = null,
+    customTypes = null,
+    select = null
+  } = {
+    label: null,
+    placeholder: null
+  }) => fieldName => ({
+    type: 'Link',
+    config: _extends({
+      label: label || `${fieldName} Link`,
+      placeholder: placeholder || `${fieldName} value`
+    }, allowTargetBlank ? {
+      allowTargetBlank
+    } : null, customTypes ? {
+      customtypes: customTypes
+    } : null, select ? {
+      select
+    } : null)
+  });
+
+  Link.Href = createMockContent(() => ({
+    link_type: 'Web',
+    url: 'https://github.com/hypervillain/pris-types'
+  }));
+  Link.Document = createMockContent((ct = 'fake-document', params = {}) => _extends({
+    id: "fake-pris-types-id",
+    type: ct,
+    tags: [],
+    slug: ct,
+    lang: "en-us",
+    link_type: "Document",
+    isBroken: false
+  }, params));
+  Link.Media = createMockContent(() => {
+    console.warn('Link.Media is not implemented. Proceeding with Href link.');
+    return {
+      link_type: 'Web',
+      url: 'https://github.com/hypervillain/pris-types'
+    };
+  });
+
+  const Number = ({
+    label = null,
+    placeholder = null
+  }) => fieldName => ({
+    type: 'Date',
+    config: {
+      label: label || `${fieldName} Date`,
+      placeholder: placeholder || `${fieldName} value`
+    }
+  });
+
+  const rand = (min, max) => Math.floor(Math.random() * (max - min) + min);
+
+  Number.Small = createMockContent(() => rand(1, 9));
+  Number.Long = createMockContent(() => rand(1000, 100000));
+  Number.Negative = createMockContent(() => rand(-1000, -1));
+
   var RichTextOptionsEnum;
 
   (function (RichTextOptionsEnum) {
+    RichTextOptionsEnum["p"] = "paragraph";
+    RichTextOptionsEnum["pre"] = "preformatted";
     RichTextOptionsEnum["h1"] = "heading1";
     RichTextOptionsEnum["h2"] = "heading2";
     RichTextOptionsEnum["h3"] = "heading3";
-    RichTextOptionsEnum["paragraph"] = "paragraph";
+    RichTextOptionsEnum["h4"] = "heading4";
+    RichTextOptionsEnum["h5"] = "heading5";
+    RichTextOptionsEnum["h6"] = "heading6";
+    RichTextOptionsEnum["strong"] = "strong";
+    RichTextOptionsEnum["em"] = "em";
+    RichTextOptionsEnum["link"] = "hyperlink";
+    RichTextOptionsEnum["image"] = "image";
+    RichTextOptionsEnum["embed"] = "embed";
+    RichTextOptionsEnum["list"] = "list-item";
+    RichTextOptionsEnum["oList"] = "o-list-item";
+    RichTextOptionsEnum["rtl"] = "rtl";
   })(RichTextOptionsEnum || (RichTextOptionsEnum = {}));
 
   const RichTextOptions = Object.values(RichTextOptionsEnum);
 
   const RichText = ({
+    label = null,
     placeholder = null,
     multi = false,
     options = RichTextOptions
   }) => fieldName => ({
     type: 'StructuredText',
     config: {
+      label: label || `${fieldName} Richtext`,
       [multi ? 'multi' : 'single']: options.join(','),
       placeholder: placeholder || `${fieldName} field`
     }
@@ -185,36 +320,68 @@
   RichText.Heading = createConfig('HEADING');
   RichText.Story = createConfig('STORY');
 
-  var TitleOptionsEnum;
-
-  (function (TitleOptionsEnum) {
-    TitleOptionsEnum["h1"] = "heading1";
-    TitleOptionsEnum["h2"] = "heading2";
-    TitleOptionsEnum["h3"] = "heading3";
-    TitleOptionsEnum["h4"] = "heading4";
-    TitleOptionsEnum["h5"] = "heading5";
-    TitleOptionsEnum["b"] = "bold";
-    TitleOptionsEnum["em"] = "em";
-  })(TitleOptionsEnum || (TitleOptionsEnum = {}));
-
-  const TitleOptions = Object.values(TitleOptionsEnum);
-
-  const Title = ({
+  const Select = ({
+    label = null,
     placeholder = null,
-    multi = false,
-    options = TitleOptions
-  }) => fieldName => RichText({
-    placeholder,
-    multi,
-    options
-  })(fieldName);
+    options = null,
+    defaultValue = null
+  } = {
+    label: null,
+    placeholder: null,
+    options: ['Option 1', 'Option 2'],
+    defaultValue: null
+  }) => fieldName => ({
+    type: 'Select',
+    config: {
+      label: label || `${fieldName} Select`,
+      placeholder: placeholder || `${fieldName} value`,
+      options,
+      default_value: defaultValue != undefined ? defaultValue : options[0]
+    }
+  });
 
-  Object.entries(RichText).forEach(([key, fn]) => {
-    Title[key] = fn;
+  Select.Option = createMockContent(o => o);
+
+  const Text = ({
+    label = null,
+    placeholder = null
+  }) => fieldName => ({
+    type: 'Text',
+    config: {
+      label: label || `${fieldName} Text`,
+      placeholder: placeholder || `${fieldName} value`
+    }
+  });
+
+  const Timestamp = ({
+    label = null,
+    placeholder = null
+  }) => fieldName => ({
+    type: 'Timestamp',
+    config: {
+      label: label || `${fieldName} Timestamp`,
+      placeholder: placeholder || `${fieldName} value`
+    }
+  });
+
+  Timestamp.Now = createMockContent(() => new Date().toISOString());
+  Timestamp.Future = createMockContent(() => {
+    let d = new Date();
+    d.setDate(d.getDate() + 7);
+    return d.toISOString();
+  });
+  Timestamp.Past = createMockContent(() => {
+    let d = new Date();
+    d.setDate(d.getDate() - 7);
+    return d.toISOString();
   });
 
   const _handleFields = (fields = {}) => {
     return Object.entries(fields).reduce((acc, [key, fn]) => {
+      if (!fn) {
+        throw new Error(`[pris-types] Unknown helper at key "${key}". Exiting.`);
+      }
+
       const depth = fn.toString().split('=>').length - 1;
       return _extends({}, acc, {
         // @ts-ignore halp!
@@ -243,6 +410,14 @@
     } = obj,
           variations = _objectWithoutPropertiesLoose(obj, ["__common", "__meta"]);
 
+    if (!__meta) {
+      throw new Error('Field "__meta" is undefined. It expects properties "title" and "description".');
+    }
+
+    if (!__meta.title || !__meta.description) {
+      throw new Error('Field "__meta" expects properties "title" and "description".');
+    }
+
     const {
       title,
       description
@@ -264,8 +439,15 @@
     __proto__: null,
     Boolean: Boolean,
     Color: Color,
+    Date: _Date,
+    GeoPoint: GeoPoint,
+    Image: Image,
+    Link: Link,
+    Number: Number,
     RichText: RichText,
-    Title: Title,
+    Select: Select,
+    Text: Text,
+    Timestamp: Timestamp,
     shape: shape,
     variation: variation
   };
@@ -283,7 +465,7 @@
   const extractModel = async (code, filename, {
     plugins = [],
     presets = []
-  } = babel.react) => {
+  } = react.config) => {
     const {
       Model,
       Mocks
@@ -342,7 +524,6 @@
     try {
       return eval('(function() {' + str + '}())');
     } catch (e) {
-      console.error(e);
       return {
         error: e
       };

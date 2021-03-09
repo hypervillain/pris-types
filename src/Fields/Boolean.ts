@@ -25,7 +25,7 @@ const Boolean = ({
 }: BooleanProps) => (fieldName: String): BooleanPayload => ({
   type: 'Boolean',
   config: {
-    label: label || `${fieldName} value`,
+    label: label || `${fieldName} Boolean`,
     placeholder_true: placeholderTrue || 'true',
     placeholder_false: placeholderFalse || 'false',
     default_value: defaultValue != undefined ? defaultValue : true

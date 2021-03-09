@@ -24,6 +24,30 @@ BaseCSS.defaultProps = {
     overflow-x: auto;
     outline: none;
   }
+  .sidebar > a {
+    font-size: 18px !important;
+  }
+
+  .anchored {
+    cursor: pointer;
+  }
+
+  .anchored:after {
+    content: '';
+    position: relative;
+    top: 3px;
+    display: inline-block;
+    width: 23px;
+    height: 23px;
+    background: url("https://b.stripecdn.com/docs/assets/fcc3a1c24df6fcffface6110ca4963de.svg") no-repeat;
+    background-size: 100% 100%;
+    margin-left: 4px;
+    opacity: 0;
+    transition: opacity 250ms ease-in-out;
+  }
+  .anchored:hover:after {
+    opacity: 1;
+  }
 `
 }
 

@@ -5,23 +5,32 @@
       "description": [
         {
           "type": "heading1",
-          "text": "Drive killer web services",
+          "text": "Revolutionize distributed bandwidth",
           "spans": []
         }
       ]
     },
     "items": [
       {
-        "color": "#fd9efd"
+        "color": "#b483f4"
       },
       {
-        "color": "#9433d0"
+        "color": "#f5ea7c"
       },
       {
-        "color": "#b12236"
+        "color": "#eed674"
       },
       {
-        "color": "#b3902a"
+        "color": "#c9f740"
+      },
+      {
+        "color": "#d05a5a"
+      },
+      {
+        "color": "#3508b3"
+      },
+      {
+        "color": "#7c0040"
       }
     ],
     "slice_type": "example_slice"
@@ -32,20 +41,20 @@
       "description": [
         {
           "type": "paragraph",
-          "text": "Commodo sit labore do id enim.",
+          "text": "Aliquip culpa est irure.",
           "spans": []
         }
       ]
     },
     "items": [
       {
-        "color": "#9e4605"
+        "color": "#8c8f15"
       },
       {
-        "color": "#2a07c3"
+        "color": "#becf9d"
       },
       {
-        "color": "#67e78d"
+        "color": "#c8cc2a"
       }
     ],
     "slice_type": "example_slice"

@@ -1,6 +1,6 @@
 import generate from '@babel/generator'
 import extract from 'babel-extract-named-export'
-import { react as defaultReactConfiguration } from 'babel-extract-named-export/babel'
+import { config as defaultReactConfiguration } from 'babel-extract-named-export/babel/react'
 
 import removeImports from 'babel-plugin-transform-remove-imports'
 
@@ -58,7 +58,6 @@ const prisGenerate = (Model, Mock, sliceName, { requirePath, build } = { build: 
   try {
     return eval('(function() {' + str + '}())')
   } catch(e) {
-    console.error(e)
     return { error: e }
   }
 }

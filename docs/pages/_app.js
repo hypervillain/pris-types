@@ -7,9 +7,12 @@ import {
   Pagination,
 } from 'mdx-docs'
 
+import theme from '../src/theme'
+
 const routes = [
   { name: 'Introduction', path: '/' },
   { name: 'Live Preview', path: '/live' },
+  { name: 'Fields Reference', path: '/fields-ref' },
   { name: 'FAQ', path: '/faq' },
 ]
 
@@ -18,6 +21,17 @@ const components = {
     <Link href={href}>
       <a {...props} />
     </Link>,
+  h2: ({ children, className, id }) => {
+    return (
+      <h2
+        id={children}
+        onClick={() => location.hash = children}
+        className={`${className} anchored`}
+      >
+        {children}
+      </h2>
+    )
+  }
 }
 
 
@@ -42,10 +56,11 @@ export default class MyApp extends App {
     return (
       <Layout
         {...props}
+        theme={theme}
         components={components}
         routes={routes}>
         <Layout.MenuToggle />
-        <Layout.Sidebar>
+        <Layout.Sidebar className="sidebar">
           < NavLinks />
         </Layout.Sidebar>
         <Layout.Main>

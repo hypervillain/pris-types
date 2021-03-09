@@ -5,7 +5,7 @@ So, this page is mostly made of questions I asked myself during development.
 
 ### Can I delete my model on build? How?
 
-You can delete the Model key and imports on build.
+Yes, pretty much like you'd do for `prop-types`: using a Babel plugin.
 
 ### Can I destructure PrisTypes?
 
@@ -38,4 +38,4 @@ const bool = PrisTypes.Boolean({ placeholder: randomString() })
 Unfortunately, `pris-types` evaluates your code in a certain context
 and at the moment, this context cannot be extended.
 
-<div style={{ marginBottom: '36px'}} />
+---

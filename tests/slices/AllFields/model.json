@@ -1,0 +1,115 @@
+{
+  "id": "all-fields",
+  "title": "My Awesome Slice",
+  "description": "A really cool slice",
+  "variations": [
+    {
+      "id": "defaultVariation",
+      "primary": {
+        "bool": {
+          "type": "Boolean",
+          "config": {
+            "label": "bool Boolean",
+            "placeholder_true": "true",
+            "placeholder_false": "false",
+            "default_value": true
+          }
+        },
+        "color": {
+          "type": "Color",
+          "config": {
+            "label": "color Color",
+            "placeholder": "color value"
+          }
+        },
+        "date": {
+          "type": "Date",
+          "config": {
+            "label": "date Date",
+            "placeholder": "date value"
+          }
+        },
+        "geo": {
+          "type": "GeoPoint",
+          "config": {
+            "label": "geo GeoPoint",
+            "placeholder": "geo value"
+          }
+        },
+        "img": {
+          "type": "Image",
+          "config": {
+            "constraint": {
+              "height": "500",
+              "width": "500"
+            },
+            "thumbnails": []
+          }
+        },
+        "doc": {
+          "type": "Link",
+          "config": {
+            "label": "doc Link",
+            "placeholder": "doc value",
+            "customtypes": [
+              "another-one"
+            ],
+            "select": "document"
+          }
+        },
+        "link": {
+          "type": "Link",
+          "config": {
+            "label": "link Link",
+            "placeholder": "link value",
+            "customtypes": [
+              "homepage"
+            ],
+            "select": "document"
+          }
+        },
+        "num": {
+          "type": "Date",
+          "config": {
+            "label": "num Date",
+            "placeholder": "num value"
+          }
+        },
+        "multi": {
+          "type": "StructuredText",
+          "config": {
+            "multi": "heading1,heading2",
+            "placeholder": "multi field"
+          }
+        },
+        "select": {
+          "type": "Select",
+          "config": {
+            "label": "select Select",
+            "placeholder": "select value",
+            "options": [
+              "11",
+              "22"
+            ],
+            "default_value": "11"
+          }
+        },
+        "txt": {
+          "type": "Text",
+          "config": {
+            "label": "My Cool Label",
+            "placeholder": "txt value"
+          }
+        },
+        "tmstmp": {
+          "type": "Timestamp",
+          "config": {
+            "label": "tmstmp Timestamp",
+            "placeholder": "My cool tmpspt"
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

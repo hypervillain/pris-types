@@ -1,7 +1,7 @@
 import randomColor from 'randomcolor';
 import generate from '@babel/generator';
 import extract from 'babel-extract-named-export';
-import { react } from 'babel-extract-named-export/babel';
+import { config } from 'babel-extract-named-export/babel/react';
 import removeImports from 'babel-plugin-transform-remove-imports';
 
 function _extends() {
@@ -115,7 +115,7 @@ const Boolean = ({
 }) => fieldName => ({
   type: 'Boolean',
   config: {
-    label: label || `${fieldName} value`,
+    label: label || `${fieldName} Boolean`,
     placeholder_true: placeholderTrue || 'true',
     placeholder_false: placeholderFalse || 'false',
     default_value: defaultValue != undefined ? defaultValue : true
@@ -145,24 +145,159 @@ Color.Light = createMockContent(() => randomColor({
   luminosity: 'light'
 }));
 
+const _Date = ({
+  label: _label = null,
+  placeholder: _placeholder = null
+}) => fieldName => ({
+  type: 'Date',
+  config: {
+    label: _label || `${fieldName} Date`,
+    placeholder: _placeholder || `${fieldName} value`
+  }
+});
+
+_Date.Now = createMockContent(() => new Date().toISOString().split('T')[0]);
+_Date.Future = createMockContent(() => {
+  let d = new Date();
+  d.setDate(d.getDate() + 7);
+  return d.toISOString().split('T')[0];
+});
+_Date.Past = createMockContent(() => {
+  let d = new Date();
+  d.setDate(d.getDate() - 7);
+  return d.toISOString().split('T')[0];
+});
+
+const GeoPoint = ({
+  label: _label = null,
+  placeholder: _placeholder = null
+}) => fieldName => ({
+  type: 'GeoPoint',
+  config: {
+    label: _label || `${fieldName} GeoPoint`,
+    placeholder: _placeholder || `${fieldName} value`
+  }
+});
+
+const parseString = (str, name = null) => {
+  const [width, height] = str.split('x');
+  return _extends({}, name ? {
+    name
+  } : null, {
+    height,
+    width
+  });
+};
+
+const Image = (_ref) => {
+  let {
+    label = null,
+    constraint = "500x500"
+  } = _ref,
+      thumbnails = _objectWithoutPropertiesLoose(_ref, ["label", "constraint"]);
+
+  return () => ({
+    type: 'Image',
+    config: {
+      constraint: parseString(constraint),
+      thumbnails: Object.entries(thumbnails || {}).reduce((acc, [key, str]) => [...acc, parseString(str, key)], [])
+    }
+  });
+};
+
+const Link = ({
+  label,
+  placeholder,
+  allowTargetBlank: _allowTargetBlank = null,
+  customTypes: _customTypes = null,
+  select: _select = null
+} = {
+  label: null,
+  placeholder: null
+}) => fieldName => ({
+  type: 'Link',
+  config: _extends({
+    label: label || `${fieldName} Link`,
+    placeholder: placeholder || `${fieldName} value`
+  }, _allowTargetBlank ? {
+    allowTargetBlank: _allowTargetBlank
+  } : null, _customTypes ? {
+    customtypes: _customTypes
+  } : null, _select ? {
+    select: _select
+  } : null)
+});
+
+Link.Href = createMockContent(() => ({
+  link_type: 'Web',
+  url: 'https://github.com/hypervillain/pris-types'
+}));
+Link.Document = createMockContent((ct = 'fake-document', params = {}) => _extends({
+  id: "fake-pris-types-id",
+  type: ct,
+  tags: [],
+  slug: ct,
+  lang: "en-us",
+  link_type: "Document",
+  isBroken: false
+}, params));
+Link.Media = createMockContent(() => {
+  console.warn('Link.Media is not implemented. Proceeding with Href link.');
+  return {
+    link_type: 'Web',
+    url: 'https://github.com/hypervillain/pris-types'
+  };
+});
+
+const Number = ({
+  label: _label = null,
+  placeholder: _placeholder = null
+}) => fieldName => ({
+  type: 'Date',
+  config: {
+    label: _label || `${fieldName} Date`,
+    placeholder: _placeholder || `${fieldName} value`
+  }
+});
+
+const rand = (min, max) => Math.floor(Math.random() * (max - min) + min);
+
+Number.Small = createMockContent(() => rand(1, 9));
+Number.Long = createMockContent(() => rand(1000, 100000));
+Number.Negative = createMockContent(() => rand(-1000, -1));
+
 var RichTextOptionsEnum;
 
 (function (RichTextOptionsEnum) {
+  RichTextOptionsEnum["p"] = "paragraph";
+  RichTextOptionsEnum["pre"] = "preformatted";
   RichTextOptionsEnum["h1"] = "heading1";
   RichTextOptionsEnum["h2"] = "heading2";
   RichTextOptionsEnum["h3"] = "heading3";
-  RichTextOptionsEnum["paragraph"] = "paragraph";
+  RichTextOptionsEnum["h4"] = "heading4";
+  RichTextOptionsEnum["h5"] = "heading5";
+  RichTextOptionsEnum["h6"] = "heading6";
+  RichTextOptionsEnum["strong"] = "strong";
+  RichTextOptionsEnum["em"] = "em";
+  RichTextOptionsEnum["link"] = "hyperlink";
+  RichTextOptionsEnum["image"] = "image";
+  RichTextOptionsEnum["embed"] = "embed";
+  RichTextOptionsEnum["list"] = "list-item";
+  RichTextOptionsEnum["oList"] = "o-list-item";
+  RichTextOptionsEnum["rtl"] = "rtl";
 })(RichTextOptionsEnum || (RichTextOptionsEnum = {}));
 
 const RichTextOptions = Object.values(RichTextOptionsEnum);
 
 const RichText = ({
+  label: _label = null,
   placeholder: _placeholder = null,
   multi: _multi = false,
   options: _options = RichTextOptions
 }) => fieldName => ({
   type: 'StructuredText',
   config: {
+    label: _label || `${fieldName} Richtext`,
     [_multi ? 'multi' : 'single']: _options.join(','),
     placeholder: _placeholder || `${fieldName} field`
   }
@@ -179,36 +314,68 @@ RichText.Paragraph = createConfig('PARAGRAPH');
 RichText.Heading = createConfig('HEADING');
 RichText.Story = createConfig('STORY');
 
-var TitleOptionsEnum;
-
-(function (TitleOptionsEnum) {
-  TitleOptionsEnum["h1"] = "heading1";
-  TitleOptionsEnum["h2"] = "heading2";
-  TitleOptionsEnum["h3"] = "heading3";
-  TitleOptionsEnum["h4"] = "heading4";
-  TitleOptionsEnum["h5"] = "heading5";
-  TitleOptionsEnum["b"] = "bold";
-  TitleOptionsEnum["em"] = "em";
-})(TitleOptionsEnum || (TitleOptionsEnum = {}));
-
-const TitleOptions = Object.values(TitleOptionsEnum);
-
-const Title = ({
+const Select = ({
+  label: _label = null,
   placeholder: _placeholder = null,
-  multi: _multi = false,
-  options: _options = TitleOptions
-}) => fieldName => RichText({
-  placeholder: _placeholder,
-  multi: _multi,
-  options: _options
-})(fieldName);
+  options: _options = null,
+  defaultValue: _defaultValue = null
+} = {
+  label: null,
+  placeholder: null,
+  options: ['Option 1', 'Option 2'],
+  defaultValue: null
+}) => fieldName => ({
+  type: 'Select',
+  config: {
+    label: _label || `${fieldName} Select`,
+    placeholder: _placeholder || `${fieldName} value`,
+    options: _options,
+    default_value: _defaultValue != undefined ? _defaultValue : _options[0]
+  }
+});
 
-Object.entries(RichText).forEach(([key, fn]) => {
-  Title[key] = fn;
+Select.Option = createMockContent(o => o);
+
+const Text = ({
+  label: _label = null,
+  placeholder: _placeholder = null
+}) => fieldName => ({
+  type: 'Text',
+  config: {
+    label: _label || `${fieldName} Text`,
+    placeholder: _placeholder || `${fieldName} value`
+  }
+});
+
+const Timestamp = ({
+  label: _label = null,
+  placeholder: _placeholder = null
+}) => fieldName => ({
+  type: 'Timestamp',
+  config: {
+    label: _label || `${fieldName} Timestamp`,
+    placeholder: _placeholder || `${fieldName} value`
+  }
+});
+
+Timestamp.Now = createMockContent(() => new Date().toISOString());
+Timestamp.Future = createMockContent(() => {
+  let d = new Date();
+  d.setDate(d.getDate() + 7);
+  return d.toISOString();
+});
+Timestamp.Past = createMockContent(() => {
+  let d = new Date();
+  d.setDate(d.getDate() - 7);
+  return d.toISOString();
 });
 
 const _handleFields = (fields = {}) => {
   return Object.entries(fields).reduce((acc, [key, fn]) => {
+    if (!fn) {
+      throw new Error(`[pris-types] Unknown helper at key "${key}". Exiting.`);
+    }
+
     const depth = fn.toString().split('=>').length - 1;
     return _extends({}, acc, {
       // @ts-ignore halp!
@@ -237,6 +404,14 @@ const shape = obj => {
   } = obj,
         variations = _objectWithoutPropertiesLoose(obj, ["__common", "__meta"]);
 
+  if (!__meta) {
+    throw new Error('Field "__meta" is undefined. It expects properties "title" and "description".');
+  }
+
+  if (!__meta.title || !__meta.description) {
+    throw new Error('Field "__meta" expects properties "title" and "description".');
+  }
+
   const {
     title,
     description
@@ -258,8 +433,15 @@ var Types = {
   __proto__: null,
   Boolean: Boolean,
   Color: Color,
+  Date: _Date,
+  GeoPoint: GeoPoint,
+  Image: Image,
+  Link: Link,
+  Number: Number,
   RichText: RichText,
-  Title: Title,
+  Select: Select,
+  Text: Text,
+  Timestamp: Timestamp,
   shape: shape,
   variation: variation
 };
@@ -277,7 +459,7 @@ function validate(Model) {
 const extractModel = async (code, filename, {
   plugins: _plugins = [],
   presets: _presets = []
-} = react) => {
+} = config) => {
   const {
     Model,
     Mocks
@@ -336,7 +518,6 @@ const prisGenerate = (Model, Mock, sliceName, {
   try {
     return eval('(function() {' + str + '}())');
   } catch (e) {
-    console.error(e);
     return {
       error: e
     };

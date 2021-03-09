@@ -1,0 +1,340 @@
+import { H } from '../components'
+
+# Fields Reference
+
+In Prismic, each slice is a composition of one or several **variations**. And each of these variation
+is itself a composition of a non-repeatable zone called **primary** and a repeatable zone called **items**.
+
+And each of these zones is composed of Prismic **fields** (or widgets).
+
+They define both the shape of the data your slices will receive from the API and what your editors in the Prismic
+content editor. For each of these fields, `pris-types` offers a corresponding helper and sometimes aliases.
+
+** 4 Things to note**:
+
+1. All `snake_cased` properties in Prismic, are mapped to `camelCase` in `pris-types`
+
+2. Some helpers require properties to be defined, they are marked with a 🔺 emoji
+
+3. Helpers may export mock functions that should be used in the `Mocks` export
+
+4. Don't define mocks everywhere, the builder provides meaningful mocks by default
+
+
+## Boolean
+
+| Params           | Description                   | Required | Default value |
+| ---------------- | ----------------------------- | -------- | ------------- |
+| label            | Input Label for content field | No       |      field name         |
+| placeholderTrue  | What to display for value "True"                              | No       |              True |
+| placeholderFalse | What to display for value "False"        | No       |           False    |
+| defaultValue     | Default selected value for editors                              | No       |              True |
+
+### Mocks
+
+For mocking a Boolean field, you've got 3 helpers:
+
+* Use `Rand` to get a random value between true & false
+* Use `True` to always get true
+* Use `False` to always get false
+  
+eg.
+
+```javascript
+const field = PrisTypes.Boolean.Rand()
+````
+
+
+## Color
+
+| Params      | Description                         | Required | Default value |
+| ----------- | ----------------------------------- | -------- | ------------- |
+| label       | Input Label for content field       | No       | field name    |
+| placeholder | Input Placeholder (content editors) | No       | field name    |
+
+### Mocks
+
+For mocking a Color field, you\'ve got 3 possibilities:
+
+* use `Rand` to get a random hex color
+* use `Dark` to get a dark hex color
+* use `Light` to get a light hex color
+  
+eg.
+
+```javascript
+const field = PrisTypes.Color.Rand() // #E1E1E1
+````
+
+
+## Date
+
+| Params      | Description                         | Required | Default value |
+| ----------- | ----------------------------------- | -------- | ------------- |
+| label       | Input Label for content field       | No       | field name    |
+| placeholder | Input Placeholder (content editors) | No       | field name    |
+
+### Mocks
+
+For mocking a Date field, you've got 3 possibilities:
+
+* use `Now` to get the current date
+* use `Future` to get a date up to a week _after_ now
+* use `Past` to get a date up to a week _before_ now
+  
+eg.
+```javascript
+const field = PrisTypes.Date.Now()
+
+````
+
+
+## GeoPoint
+
+| Params      | Description                         | Required | Default value |
+| ----------- | ----------------------------------- | -------- | ------------- |
+| label       | Input Label for content field       | No       | field name    |
+| placeholder | Input Placeholder (content editors) | No       | field name    |
+
+### Mocks
+
+The default mock configuration of GeoPoint works well enough and will return
+random, valid coordinates in Paris 💜 Feel free to skip mock configuration here!
+
+
+## 🔺 Image
+
+| Params | Description | Required | Default value |
+| ------ | ----------- | -------- | ------------- |
+| label       | Input Label for content field       | No       | field name    |
+| constraint       | A string with width and height sizes       | Yes       | eg. `500x500`    |
+| key:thumbnailName       | A string with width and height sizes       | Yes       | eg. `portrait: "800x350"`    |
+
+### Example
+
+Say you want to define an Image field with a default constraint of 1000x1200 size, and some alternative
+constraints (called thumbnails in Prismic) for square images and portraits:
+
+```javascript
+const img = PrisTypes.Image({
+  label: "My well defined Image",
+  contraint: "1000x1200",
+  square: "500x500",
+  portrait: "800x350"
+})
+````
+
+### Mocks
+
+The default mock configuration of Image fields provide you with a random image from Unsplash,
+that will be correctly dimensioned to constraints you defined. Feel free to skip the mock configuration here!
+
+
+## 🔺 Link
+
+In Prismic, Links can define a relation to:
+* A Web URL
+* A document in Prismic
+* A media stored in Prismic
+
+The Link field provides ways to define several sub-fields and therefore is sort of a low-level
+field, that might not be the most convenient for everyone. Consider using **aliases** instead!
+
+| Params           | Description                         | Required | Default value |
+| ---------------- | ----------------------------------- | -------- | ------------- |
+| label       | Input Label for content field       | No       | field name    |
+| placeholder      | Input Placeholder (content editors) | No       | field name    |
+| allowTargetBlank | Boolean for links to web URL                                    | No       |     true          |
+| customTypes      | Array of custom types for links to docs                                   | If Document       |  null             |
+| select           | Select between media or document type                                    | If Doc or Media       | null              |
+
+<details>
+  <summary>Examples</summary>
+  <div>
+    <h4>
+      Web URL
+    </h4>
+    <pre>
+      {`const link = PrisTypes.Link({
+  label: "My link",
+  placeholder: "Could be a link to use case, press article, signup...",
+  allowTargetBlank: false
+})`}
+    </pre>
+    <h4>
+      Link To Document
+    </h4>
+    <pre>
+      {`const link = PrisTypes.Link({
+  label: "My link",
+  placeholder: "Could be a link to homepage or author...",
+  select: "document",
+  customTypes: ["homepage", "author"]
+})`}
+    </pre>
+    <h4>
+      Link To Media
+    </h4>
+    <pre>
+      {`const link = PrisTypes.Link({
+  label: "My link",
+  placeholder: "Could be a link to PDF file or video...",
+  select: "media"
+})`}
+    </pre>
+  </div>
+</details>
+
+### Aliases
+
+#### LinkToWeb
+
+Pretty much the same as a "no special config" Link
+
+```javascript
+const link = PrisTypes.LinkToWeb()
+````
+#### LinkToDoc
+
+Required property `customTypes`, it sets `select` to `document` automatically:
+```javascript
+const link = PrisTypes.LinkToDoc({
+  customTypes: ['homepage']
+})
+````
+
+#### LinkToMedia
+It sets `select` to `media` automatically:
+```javascript
+const link = PrisTypes.LinkToMedia()
+````
+
+### Mocks
+
+For mocking a Link field, you've got 3 helpers, each related to its dedicated link type:
+
+* use `Web` to create a web link mock
+  ,
+* use `Document` to create a document link mock
+  ,
+* use `Media` to create a document media mock
+  
+eg.
+```
+const link = PrisTypes.Link.Web() || PrisTypes.LinkToWeb.Web()
+const docLink = PrisTypes.Link.Document() || PrisTypes.LinkToDoc.Document()
+const mediaLink = PrisTypes.Link.Media() || PrisTypes.LinkToMedia.Media()
+
+````
+
+
+## Number
+
+| Params      | Description                         | Required | Default value |
+| ----------- | ----------------------------------- | -------- | ------------- |
+| label       | Input Label for content field       | No       | field name    |
+| placeholder | Input Placeholder (content editors) | No       | field name    |
+
+### Mocks
+
+For mocking a Number field, you've got 3 possibilities:
+
+* use `Small` to return a number between 1 and 9
+  ,
+* use `Long` to return a number between 1000 and 100_000
+  ,
+* use `Negative` to return a number between -1000 and -1
+
+Note that not providing a mock configuration will work fine for most cases.
+  
+eg.
+```
+const field = PrisTypes.Number.Small()
+
+````
+
+
+## RichText (TODO)
+
+| Params          | Description                         | Required | Default value |
+| --------------- | ----------------------------------- | -------- | ------------- |
+| label           | Input Label for content field       | No       | field name    |
+| placeholder     | Input Placeholder (content editors) | No       | field name    |
+| multi           |                                     | No       |               |
+| false           |                                     | No       |               |
+| options         |                                     | No       |               |
+| RichTextOptions |                                     | No       |               |
+
+### Mocks
+
+For mocking a RichText field, you've got 3 possibilities:
+
+* use `Paragraph` to
+  ,
+* use `Heading` to
+  ,
+* use `Story` to
+  
+eg.
+```
+const field = PrisTypes.RichText.Paragraph()
+
+````
+
+
+## Select (TODO)
+
+| Params         | Description                         | Required | Default value |
+| -------------- | ----------------------------------- | -------- | ------------- |
+| label          | Input Label for content field       | No       | field name    |
+| placeholder    | Input Placeholder (content editors) | No       | field name    |
+| options        |                                     | No       |               |
+| defaultValue  |                                     | No       |               |
+
+### Mocks
+
+For mocking a Select field, you've got 1 possibilities:
+
+* use `Option` to
+  
+eg.
+```
+const field = PrisTypes.Select.Option()
+
+````
+
+
+## Text
+
+| Params      | Description                         | Required | Default value |
+| ----------- | ----------------------------------- | -------- | ------------- |
+| label       | Input Label for content field       | No       | field name    |
+| placeholder | Input Placeholder (content editors) | No       | field name    |
+
+### Mocks
+
+The default mock configuration of Text works well enough in most cases. I may add some helpers if needed.
+
+
+## Timestamp
+
+| Params      | Description                         | Required | Default value |
+| ----------- | ----------------------------------- | -------- | ------------- |
+| label       | Input Label for content field       | No       | field name    |
+| placeholder | Input Placeholder (content editors) | No       | field name    |
+
+### Mocks
+
+For mocking a Timestamp field, you've got 3 helpers:
+
+* use `Now` to get the current date
+* use `Future` to get a date up to a week _after_ now
+* use `Past` to get a date up to a week _before_ now
+  
+eg.
+```
+const field = PrisTypes.Timestamp.Now()
+
+````
+
+----

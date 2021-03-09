@@ -1,8 +1,8 @@
 const fetch = require('node-fetch')
 
-const save = (payload) => {
+const save = (payload, port) => {
   return new Promise((resolve) => {
-    fetch(`http://localhost:9999/api/update`, {
+    fetch(`http://localhost:${port}/api/update`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

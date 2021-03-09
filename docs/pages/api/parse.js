@@ -1,38 +1,18 @@
-import { evaluator, extractor } from 'pris-types/dist/index.umd'
-
-const code2 = `
-  export const Model = PrisTypes.shape({
-    defaultVariation: PrisTypes.variation({
-      primary: {
-        title: PrisTypes.Title,
-        description: PrisTypes.RichText({
-          placeholder: "short length text please"
-        }),
-      },
-      items: {
-        color: PrisTypes.Color
-      }
-    }),
-    anotherVariation: PrisTypes.variation({
-      primary: {
-        title: PrisTypes.Title,
-        description: PrisTypes.RichText({
-          placeholder: "short length text please"
-        }),
-      },
-      items: {
-        color: PrisTypes.Color
-      }
-    })
-  })
-  `
+import { handlers, PrisTypes } from 'pris-types'
 
 export default async function handler(req, res) {
+  const sliceName = 'DemoSlice'
   const { code } = JSON.parse(req.body)
-  const { Model } = await extractor(code)
-  const jsonModel = evaluator(Model, { build: 'umd' })
-  console.log({ jsonModel })
+  const { Model, err } = await handlers.extractModel(code, sliceName)
+  if (err) {
+    return res.status(200).send({
+      error: err
+    })
+  }
+
+  const { model, error } = handlers.generate(Model, null, sliceName)
   return res.status(200).send({
-    model: jsonModel
+    model,
+    error: error ? error.toString() : null
   })
 }

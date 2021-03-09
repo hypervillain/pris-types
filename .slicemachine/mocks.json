@@ -22,5 +22,56 @@
       },
       "items": {}
     }
+  },
+  "AllFields": {
+    "defaultVariation": {
+      "primary": {
+        "bool": {
+          "content": true
+        },
+        "color": {
+          "content": "#bfb5f4"
+        },
+        "date": {
+          "content": "2021-03-08"
+        },
+        "doc": {
+          "content": {
+            "id": "fake-pris-types-id",
+            "type": "fake-document",
+            "tags": [],
+            "slug": "fake-document",
+            "lang": "en-us",
+            "link_type": "Document",
+            "isBroken": false
+          }
+        },
+        "link": {
+          "content": {
+            "id": "fake-pris-types-id",
+            "type": "fake-document",
+            "tags": [],
+            "slug": "fake-document",
+            "lang": "en-us",
+            "link_type": "Document",
+            "isBroken": false
+          }
+        },
+        "num": {
+          "content": 6
+        },
+        "multi": {
+          "config": {
+            "patternType": "HEADING",
+            "blocks": 1
+          }
+        },
+        "select": {},
+        "tmstmp": {
+          "content": "2021-03-01T15:27:17.280Z"
+        }
+      },
+      "items": {}
+    }
   }
 }

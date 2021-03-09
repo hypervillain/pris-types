@@ -25,6 +25,7 @@ const DisplayModels = ({ models, setModel }) => {
 export default function Live2() {
   const [result, setResult] = useState({})
   const [toggle, setToggle] = useState(false)
+  const [error, setError] = useState(null)
   const [code, setCode] = useState(Models[0].code)
 
   useEffect(() => {
@@ -39,6 +40,10 @@ export default function Live2() {
       })
     }).then(async res => {
       const json = await res.json()
+      if (json.error) {
+        setError(json.error)
+        return setResult(null)
+      }
       if (json.model) {
         setResult(json.model)
       }
@@ -48,6 +53,7 @@ export default function Live2() {
 
   const setNewModel = (code) => {
     setCode(code)
+    setError(null)
     setTimeout(() => setToggle(t => !t), 500)
   }
 
@@ -81,15 +87,19 @@ export default function Live2() {
         <Button onClick={parse}>Parse Model to JSON 👇</Button>
         <pre
           style={{
-            minHeight: '200px',
+            minHeight: '100px',
             background: '#F7F7F7',
             padding: '16px',
             margin: '24px 0 36px'
           }}
         >
           {
-            JSON.stringify(result, null, 2)
+            error ? error : null
           }
+          {
+            result ? JSON.stringify(result, null, 2) : null
+          }
+          
         </pre>
       </LiveProvider>
     </main>

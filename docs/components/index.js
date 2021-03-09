@@ -23,3 +23,9 @@ export const Flex = (props) => (
 export const Button = (props) => (
   <button className={butt} {...props} />
 )
+
+export const H = (props) => {
+  return (
+    <h2>{props.children}</h2>
+  )
+}

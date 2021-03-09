@@ -1,9 +1,10 @@
 export const DefaultModel = {
   title: 'Simple Model',
   code: `export const Model = PrisTypes.shape({
+  __meta: { title: 'My Slice', description: 'A simple slice' },
   defaultVariation: PrisTypes.variation({
     primary: {
-      title: PrisTypes.Title,
+      title: PrisTypes.RichText({ options: ['heading1'] }),
       description: PrisTypes.RichText({
         placeholder: "short length text please"
       }),
@@ -18,9 +19,10 @@ export const DefaultModel = {
 export const WithVariations = {
   title: 'Multiple Variations',
   code: `export const Model = PrisTypes.shape({
+  __meta: { title: 'My Slice', description: 'A simple slice' },
   defaultVariation: PrisTypes.variation({
     primary: {
-      title: PrisTypes.Title,
+      title: PrisTypes.RichText({ options: ['heading1'] }),
       description: PrisTypes.RichText({
         placeholder: "short length text please"
       }),

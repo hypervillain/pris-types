@@ -14,6 +14,9 @@ interface FieldsProps {
 
 const _handleFields = (fields = {}): FieldsProps => {
   return Object.entries(fields).reduce((acc, [key, fn]) => {
+    if (!fn) {
+      throw new Error(`[pris-types] Unknown helper at key "${key}". Exiting.`)
+    }
     const depth = fn.toString().split('=>').length - 1
     return {
       ...acc,
@@ -35,6 +38,12 @@ export const variation = (zones) => {
 
 export const shape = (obj: { [x: string]: any; __common?: CommonProps, __meta: MetaProps }) => {
   const { __common = {}, __meta, ...variations } = obj
+  if (!__meta) {
+    throw new Error('Field "__meta" is undefined. It expects properties "title" and "description".')
+  }
+  if (!__meta.title || !__meta.description) {
+    throw new Error('Field "__meta" expects properties "title" and "description".')
+  }
   const { title, description } = __meta
   return {
     title,

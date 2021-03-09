@@ -5,27 +5,33 @@ const { vue: defaultVueConfiguration } = require('babel-extract-named-export/bab
 
 const generate = async ({ sliceName, from, isVueFile, p }) => {
   const file = fs.readFileSync(p, 'utf-8')
-  if (sliceName === 'VueSlice') {
-    console.log(sliceName, isVueFile, p.split(path.sep).pop())
-  }
   const { Model, Mocks, err } = await handlers.extractModel(
     file,
     p.split(path.sep).pop(),
     isVueFile ? defaultVueConfiguration : undefined
   )
 
-  // if (err) {
-  //   console.log('Could not extract Model from file.')
-  // }
-  const { model, mockConfig } = handlers.generate(Model, Mocks, sliceName, {
-    requirePath: '../dist/index.js'
-  })
-  
-  return {
-    model,
-    mockConfig,
-    sliceName,
-    from
+  if (err) {
+    return { err }
+  }
+
+  try {
+    const { model, mockConfig, error } = handlers.generate(Model, Mocks, sliceName, {
+      requirePath: '../dist/index.js'
+    })
+
+    if (error) {
+      throw error
+    }
+    
+    return {
+      model,
+      mockConfig,
+      sliceName,
+      from
+    }
+  } catch(e) {
+    console.error(`[pris-types] Error in "${sliceName}": ${e}`)
   }
 }
 
