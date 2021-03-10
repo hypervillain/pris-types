@@ -5633,10 +5633,10 @@ pretty-format@^25.5.0:
     ansi-styles "^4.0.0"
     react-is "^16.12.0"
 
-pris-types@0.0.1-alpha.5:
-  version "0.0.1-alpha.5"
-  resolved "https://registry.yarnpkg.com/pris-types/-/pris-types-0.0.1-alpha.5.tgz#ee27e7e5547f9ec65724f12e3e1c82b20caef903"
-  integrity sha512-khwSiEcac/Je4fDJL1o3RC2WjGo4Um1mcPlexOoVxx6GHpgrBDLA7zlco+5XiS6uYQe0x3NJi3V4+BHxtc+0xQ==
+pris-types@^0.0.2-alpha.0:
+  version "0.0.2-alpha.0"
+  resolved "https://registry.yarnpkg.com/pris-types/-/pris-types-0.0.2-alpha.0.tgz#20df19d206952245bed8bc719842466c16e9dca2"
+  integrity sha512-6N8T0Xw+SNkm4OQgnfQijy7q/CDV4kVOAqNiirko2S4wZEKdZojWL58RMpKQoJwC/R9yNb2YbTmdkRClrbpffA==
   dependencies:
     "@babel/core" "^7.13.8"
     "@babel/generator" "^7.13.0"
