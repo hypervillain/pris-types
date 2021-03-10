@@ -1,0 +1,59 @@
+{
+  "id": "common-fields",
+  "title": "My Slice",
+  "description": "A simple slice",
+  "variations": [
+    {
+      "id": "defaultVariation",
+      "primary": {
+        "title": {
+          "type": "StructuredText",
+          "config": {
+            "label": "title Richtext",
+            "single": "heading1,heading2,heading3,heading4,heading5,bold,em",
+            "placeholder": "title field"
+          }
+        },
+        "description": {
+          "type": "StructuredText",
+          "config": {
+            "label": "description Richtext",
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+            "placeholder": "description field"
+          }
+        }
+      },
+      "items": {
+        "color": {
+          "type": "Color",
+          "config": {
+            "label": "color Color",
+            "placeholder": "color value"
+          }
+        }
+      }
+    },
+    {
+      "id": "anotherVariation",
+      "primary": {
+        "title": {
+          "type": "StructuredText",
+          "config": {
+            "label": "title Richtext",
+            "single": "heading1,heading2,heading3,heading4,heading5,bold,em",
+            "placeholder": "title field"
+          }
+        }
+      },
+      "items": {
+        "color": {
+          "type": "Color",
+          "config": {
+            "label": "color Color",
+            "placeholder": "color value"
+          }
+        }
+      }
+    }
+  ]
+}

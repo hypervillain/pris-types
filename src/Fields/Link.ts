@@ -45,7 +45,7 @@ const Link = ({
   }
 })
 
-Link.Href = createMockContent(() => ({
+Link.Web = createMockContent(() => ({
   link_type: 'Web',
   url: 'https://github.com/hypervillain/pris-types'
 }))

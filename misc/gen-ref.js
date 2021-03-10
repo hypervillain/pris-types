@@ -6,7 +6,7 @@ const { PrisTypes } = require('../dist')
 const { shape, variation, ...fields } = PrisTypes
 
 const CommonDescriptions = {
-  label: 'Input Label for content field',
+  label: 'Input Label (content editors)',
   placeholder: 'Input Placeholder (content editors)'
 }
 

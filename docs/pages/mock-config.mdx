@@ -1,0 +1,50 @@
+# Mock Configuration (wip)
+
+Considering this JS model:
+
+```
+export const Model = PrisTypes.shape({
+  __meta: { title: 'My Slice', description: 'A simple slice' },
+  __common: {
+    primary: {
+      title: PrisTypes.Title,
+    },
+    items: {
+      color: PrisTypes.Color
+    }
+  },
+  defaultVariation: PrisTypes.variation({
+    primary: {
+      description: PrisTypes.RichText({ multi: true }),
+    },
+  }),
+  anotherVariation: PrisTypes.variation()
+})
+````
+
+We can define its mock configuration output:
+
+```
+export const Mocks = {
+  __common: {
+    primary: {
+      title: PrisTypes.Title.Heading(),
+    },
+    items: {
+      // All colors in items with be light
+      color: PrisTypes.Color.Light()
+    }
+  },
+  defaultVariation: {
+    primary: {
+      description: PrisTypes.RichText.Story(),
+    },
+  }),
+  anotherVariation: {
+    items: {
+      // override the common config for this variation
+      color: PrisTypes.Color.Dark()
+    }
+  }
+}
+````

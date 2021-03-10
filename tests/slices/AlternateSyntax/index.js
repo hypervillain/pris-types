@@ -4,7 +4,7 @@ export const Model = {
   variations: [PrisTypes.variation({
     id: 'my-variation',
     primary: {
-      title: PrisTypes.Title,
+      title: PrisTypes.RichText({ options: ['heading1'] }),
       description: PrisTypes.RichText({
         placeholder: "short length text please, ok?"
       }),

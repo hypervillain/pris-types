@@ -7,14 +7,13 @@ is itself a composition of a non-repeatable zone called **primary** and a repeat
 
 And each of these zones is composed of Prismic **fields** (or widgets).
 
-They define both the shape of the data your slices will receive from the API and what your editors in the Prismic
-content editor. For each of these fields, `pris-types` offers a corresponding helper and sometimes aliases.
+They define both the shape of the data your slices will receive from the API and what your editors will see inside Prismic. For each of these fields, `pris-types` offers a corresponding helper and sometimes aliases.
 
 ** 4 Things to note**:
 
 1. All `snake_cased` properties in Prismic, are mapped to `camelCase` in `pris-types`
 
-2. Some helpers require properties to be defined, they are marked with a 🔺 emoji
+2. Some helpers are complex or require props, they are marked with a 🔺 emoji
 
 3. Helpers may export mock functions that should be used in the `Mocks` export
 
@@ -25,7 +24,7 @@ content editor. For each of these fields, `pris-types` offers a corresponding he
 
 | Params           | Description                   | Required | Default value |
 | ---------------- | ----------------------------- | -------- | ------------- |
-| label            | Input Label for content field | No       |      field name         |
+| label            | Input Label (content editors) | No       |      field name         |
 | placeholderTrue  | What to display for value "True"                              | No       |              True |
 | placeholderFalse | What to display for value "False"        | No       |           False    |
 | defaultValue     | Default selected value for editors                              | No       |              True |
@@ -49,7 +48,7 @@ const field = PrisTypes.Boolean.Rand()
 
 | Params      | Description                         | Required | Default value |
 | ----------- | ----------------------------------- | -------- | ------------- |
-| label       | Input Label for content field       | No       | field name    |
+| label       | Input Label (content editors)       | No       | field name    |
 | placeholder | Input Placeholder (content editors) | No       | field name    |
 
 ### Mocks
@@ -71,7 +70,7 @@ const field = PrisTypes.Color.Rand() // #E1E1E1
 
 | Params      | Description                         | Required | Default value |
 | ----------- | ----------------------------------- | -------- | ------------- |
-| label       | Input Label for content field       | No       | field name    |
+| label       | Input Label (content editors)       | No       | field name    |
 | placeholder | Input Placeholder (content editors) | No       | field name    |
 
 ### Mocks
@@ -93,7 +92,7 @@ const field = PrisTypes.Date.Now()
 
 | Params      | Description                         | Required | Default value |
 | ----------- | ----------------------------------- | -------- | ------------- |
-| label       | Input Label for content field       | No       | field name    |
+| label       | Input Label (content editors)       | No       | field name    |
 | placeholder | Input Placeholder (content editors) | No       | field name    |
 
 ### Mocks
@@ -106,7 +105,7 @@ random, valid coordinates in Paris 💜 Feel free to skip mock configuration her
 
 | Params | Description | Required | Default value |
 | ------ | ----------- | -------- | ------------- |
-| label       | Input Label for content field       | No       | field name    |
+| label       | Input Label (content editors)       | No       | field name    |
 | constraint       | A string with width and height sizes       | Yes       | eg. `500x500`    |
 | key:thumbnailName       | A string with width and height sizes       | Yes       | eg. `portrait: "800x350"`    |
 
@@ -142,7 +141,7 @@ field, that might not be the most convenient for everyone. Consider using **alia
 
 | Params           | Description                         | Required | Default value |
 | ---------------- | ----------------------------------- | -------- | ------------- |
-| label       | Input Label for content field       | No       | field name    |
+| label       | Input Label (content editors)       | No       | field name    |
 | placeholder      | Input Placeholder (content editors) | No       | field name    |
 | allowTargetBlank | Boolean for links to web URL                                    | No       |     true          |
 | customTypes      | Array of custom types for links to docs                                   | If Document       |  null             |
@@ -232,7 +231,7 @@ const mediaLink = PrisTypes.Link.Media() || PrisTypes.LinkToMedia.Media()
 
 | Params      | Description                         | Required | Default value |
 | ----------- | ----------------------------------- | -------- | ------------- |
-| label       | Input Label for content field       | No       | field name    |
+| label       | Input Label (content editors)       | No       | field name    |
 | placeholder | Input Placeholder (content editors) | No       | field name    |
 
 ### Mocks
@@ -254,16 +253,14 @@ const field = PrisTypes.Number.Small()
 ````
 
 
-## RichText (TODO)
+## 🔺 RichText
 
 | Params          | Description                         | Required | Default value |
 | --------------- | ----------------------------------- | -------- | ------------- |
-| label           | Input Label for content field       | No       | field name    |
+| label           | Input Label (content editors)       | No       | field name    |
 | placeholder     | Input Placeholder (content editors) | No       | field name    |
-| multi           |                                     | No       |               |
-| false           |                                     | No       |               |
-| options         |                                     | No       |               |
-| RichTextOptions |                                     | No       |               |
+| multi           | Enable multiple paragraphs                                    | No       | false              |
+| options         | List of formatting options (see below) | No       | RichTextOptions              |
 
 ### Mocks
 
@@ -286,7 +283,7 @@ const field = PrisTypes.RichText.Paragraph()
 
 | Params         | Description                         | Required | Default value |
 | -------------- | ----------------------------------- | -------- | ------------- |
-| label          | Input Label for content field       | No       | field name    |
+| label          | Input Label (content editors)       | No       | field name    |
 | placeholder    | Input Placeholder (content editors) | No       | field name    |
 | options        |                                     | No       |               |
 | defaultValue  |                                     | No       |               |
@@ -308,7 +305,7 @@ const field = PrisTypes.Select.Option()
 
 | Params      | Description                         | Required | Default value |
 | ----------- | ----------------------------------- | -------- | ------------- |
-| label       | Input Label for content field       | No       | field name    |
+| label       | Input Label (content editors)       | No       | field name    |
 | placeholder | Input Placeholder (content editors) | No       | field name    |
 
 ### Mocks
@@ -320,7 +317,7 @@ The default mock configuration of Text works well enough in most cases. I may ad
 
 | Params      | Description                         | Required | Default value |
 | ----------- | ----------------------------------- | -------- | ------------- |
-| label       | Input Label for content field       | No       | field name    |
+| label       | Input Label (content editors)       | No       | field name    |
 | placeholder | Input Placeholder (content editors) | No       | field name    |
 
 ### Mocks

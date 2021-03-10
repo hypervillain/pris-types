@@ -1,0 +1,66 @@
+[
+  {
+    "id": "defaultVariation",
+    "primary": {
+      "title": [
+        {
+          "type": "heading1",
+          "text": "Transform viral e-tailers",
+          "spans": []
+        }
+      ],
+      "description": [
+        {
+          "type": "paragraph",
+          "text": "Voluptate cupidatat nisi irure id Lorem reprehenderit officia. Nisi commodo enim exercitation in cillum incididunt ullamco anim id sunt occaecat dolore consequat ex dolore.",
+          "spans": []
+        }
+      ]
+    },
+    "items": [
+      {
+        "color": "#c1edc1"
+      },
+      {
+        "color": "#a54ff0"
+      },
+      {
+        "color": "#9a20a5"
+      },
+      {
+        "color": "#94ae7e"
+      }
+    ],
+    "slice_type": "common_fields"
+  },
+  {
+    "id": "anotherVariation",
+    "primary": {
+      "title": [
+        {
+          "type": "heading1",
+          "text": "Transition scalable content",
+          "spans": []
+        }
+      ]
+    },
+    "items": [
+      {
+        "color": "#d085b1"
+      },
+      {
+        "color": "#cba48b"
+      },
+      {
+        "color": "#d0f0e8"
+      },
+      {
+        "color": "#41a19e"
+      },
+      {
+        "color": "#4f7bac"
+      }
+    ],
+    "slice_type": "common_fields"
+  }
+]

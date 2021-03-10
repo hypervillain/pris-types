@@ -9,14 +9,16 @@
         "title": {
           "type": "StructuredText",
           "config": {
-            "single": "heading1,heading2,heading3,heading4,heading5,bold,em",
+            "label": "title Richtext",
+            "single": "heading1",
             "placeholder": "title field"
           }
         },
         "description": {
           "type": "StructuredText",
           "config": {
-            "single": "heading1,heading2,heading3,paragraph",
+            "label": "description Richtext",
+            "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
             "placeholder": "short length text please, ok?"
           }
         }

@@ -16,8 +16,6 @@ const TitleOptions: TitleOptionsEnum[] = Object.values(TitleOptionsEnum)
 const Title = ({ label = null, placeholder = null, multi = false, options = TitleOptions }: RichTextProps) =>
 (fieldName: string): RichTextPayload => RichText({ label, placeholder, multi, options })(fieldName)
 
-Object.entries(RichText).forEach(([key, fn]) => {
-  Title[key] = fn
-})
+Title.Heading = RichText.Heading
 
 export default Title

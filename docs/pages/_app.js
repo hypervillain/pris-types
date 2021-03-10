@@ -11,8 +11,11 @@ import theme from '../src/theme'
 
 const routes = [
   { name: 'Introduction', path: '/' },
-  { name: 'Live Preview', path: '/live' },
+  { name: 'Getting Started', path: '/getting-started' },
+  { name: 'Models in depth', path: '/models-in-depth' },
+  { name: 'Mock Configuration', path: '/mock-config' },
   { name: 'Fields Reference', path: '/fields-ref' },
+  { name: 'Live Preview', path: '/live' },
   { name: 'FAQ', path: '/faq' },
 ]
 
@@ -21,11 +24,12 @@ const components = {
     <Link href={href}>
       <a {...props} />
     </Link>,
-  h2: ({ children, className, id }) => {
+  h2: ({ children, className }) => {
+    const id = children.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '').trim()
     return (
       <h2
-        id={children}
-        onClick={() => location.hash = children}
+        id={id}
+        onClick={() => location.hash = id}
         className={`${className} anchored`}
       >
         {children}

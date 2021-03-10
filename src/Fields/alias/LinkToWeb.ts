@@ -1,22 +1,22 @@
 import Link from '../Link'
 import { LinkFieldPayload } from '../Link'
 
-interface HrefFieldProps {
+interface LinkToWebFieldProps {
   label: string
   placeholder: string
   allowTargetBlank?: boolean
 }
 
-const Href = ({
+const LinkToWeb = ({
   label = null,
   placeholder = null,
   allowTargetBlank = true
-}: HrefFieldProps) => (fieldName: string): LinkFieldPayload => Link({
+}: LinkToWebFieldProps) => (fieldName: string): LinkFieldPayload => Link({
   label,
   placeholder,
   allowTargetBlank,
 })(fieldName)
 
-Href.Href = Link.Href
+LinkToWeb.Web = Link.Web
 
-export default Href
+export default LinkToWeb

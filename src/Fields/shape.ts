@@ -15,7 +15,7 @@ interface FieldsProps {
 const _handleFields = (fields = {}): FieldsProps => {
   return Object.entries(fields).reduce((acc, [key, fn]) => {
     if (!fn) {
-      throw new Error(`[pris-types] Unknown helper at key "${key}". Exiting.`)
+      throw new Error(`Unknown helper at key "${key}". Exiting.`)
     }
     const depth = fn.toString().split('=>').length - 1
     return {
@@ -26,11 +26,10 @@ const _handleFields = (fields = {}): FieldsProps => {
   }, {})
 }
 
-export const variation = (zones) => {
-  const { primary, items, id } = zones
+export const variation = (zones = { primary: {}, items: {}}) => {
+  const { primary, items } = zones
 
   return {
-    ...id ? { id } : null,
     primary: _handleFields(primary),
     items: _handleFields(items),
   } 
@@ -54,12 +53,12 @@ export const shape = (obj: { [x: string]: any; __common?: CommonProps, __meta: M
         {
           id: key,
           primary: {
+            ..._handleFields(__common.primary),
             ...variation.primary,
-            ..._handleFields(__common.primary)
           },
           items: {
+            ..._handleFields(__common.items),
             ...variation.items,
-            ..._handleFields(__common.items)
 
           }
         }

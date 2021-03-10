@@ -234,7 +234,7 @@
     } : null)
   });
 
-  Link.Href = createMockContent(() => ({
+  Link.Web = createMockContent(() => ({
     link_type: 'Web',
     url: 'https://github.com/hypervillain/pris-types'
   }));
@@ -376,10 +376,74 @@
     return d.toISOString();
   });
 
+  const LinkToWeb = ({
+    label = null,
+    placeholder = null,
+    allowTargetBlank = true
+  }) => fieldName => Link({
+    label,
+    placeholder,
+    allowTargetBlank
+  })(fieldName);
+
+  LinkToWeb.Web = Link.Web;
+
+  const LinkToDoc = ({
+    label = null,
+    placeholder = null,
+    customTypes = []
+  }) => fieldName => Link({
+    label,
+    placeholder,
+    customTypes,
+    select: 'document'
+  })(fieldName);
+
+  LinkToDoc.Document = Link.Document;
+
+  const LinkToMedia = ({
+    label = null,
+    placeholder = null
+  }) => fieldName => Link({
+    label,
+    placeholder,
+    select: 'media'
+  })(fieldName);
+
+  LinkToMedia.Media = Link.Media;
+
+  var TitleOptionsEnum;
+
+  (function (TitleOptionsEnum) {
+    TitleOptionsEnum["h1"] = "heading1";
+    TitleOptionsEnum["h2"] = "heading2";
+    TitleOptionsEnum["h3"] = "heading3";
+    TitleOptionsEnum["h4"] = "heading4";
+    TitleOptionsEnum["h5"] = "heading5";
+    TitleOptionsEnum["b"] = "bold";
+    TitleOptionsEnum["em"] = "em";
+  })(TitleOptionsEnum || (TitleOptionsEnum = {}));
+
+  const TitleOptions = Object.values(TitleOptionsEnum);
+
+  const Title = ({
+    label = null,
+    placeholder = null,
+    multi = false,
+    options = TitleOptions
+  }) => fieldName => RichText({
+    label,
+    placeholder,
+    multi,
+    options
+  })(fieldName);
+
+  Title.Heading = RichText.Heading;
+
   const _handleFields = (fields = {}) => {
     return Object.entries(fields).reduce((acc, [key, fn]) => {
       if (!fn) {
-        throw new Error(`[pris-types] Unknown helper at key "${key}". Exiting.`);
+        throw new Error(`Unknown helper at key "${key}". Exiting.`);
       }
 
       const depth = fn.toString().split('=>').length - 1;
@@ -390,18 +454,18 @@
     }, {});
   };
 
-  const variation = zones => {
+  const variation = (zones = {
+    primary: {},
+    items: {}
+  }) => {
     const {
       primary,
-      items,
-      id
+      items
     } = zones;
-    return _extends({}, id ? {
-      id
-    } : null, {
+    return {
       primary: _handleFields(primary),
       items: _handleFields(items)
-    });
+    };
   };
   const shape = obj => {
     const {
@@ -428,8 +492,8 @@
       variations: Object.entries(variations).reduce((acc, [key, variation]) => {
         return [...acc, {
           id: key,
-          primary: _extends({}, variation.primary, _handleFields(__common.primary)),
-          items: _extends({}, variation.items, _handleFields(__common.items))
+          primary: _extends({}, _handleFields(__common.primary), variation.primary),
+          items: _extends({}, _handleFields(__common.items), variation.items)
         }];
       }, [])
     };
@@ -448,6 +512,10 @@
     Select: Select,
     Text: Text,
     Timestamp: Timestamp,
+    LinkToWeb: LinkToWeb,
+    LinkToDoc: LinkToDoc,
+    LinkToMedia: LinkToMedia,
+    Title: Title,
     shape: shape,
     variation: variation
   };
@@ -474,7 +542,7 @@
       search: ['Model', 'Mocks'],
       useToJs: false,
       plugins: [[removeImports__default['default'], {
-        test: 'pris-types'
+        test: '.*'
       }], ...plugins],
       presets
     });

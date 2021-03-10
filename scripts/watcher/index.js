@@ -17,8 +17,8 @@ const processSlice = async (slices, p, port) => {
   const from = p.split(process.cwd())[1].split(sliceName)[0] // huh
   try {
     const payload = await generate({ sliceName, from, isVueFile, p: slicePath })
-    if (!payload || payload.model) {
-      console.log(`[pris-types] ${sliceName}: Could not generate Model.`)
+    if (!payload || !payload.model) {
+      return console.log(`[pris-types] ${sliceName}: Could not generate Model.\n`)
     }
     const response = await save(payload, port)
     if (response.err) {
@@ -26,13 +26,15 @@ const processSlice = async (slices, p, port) => {
     }
     const { json } = response
     if (json.warning) {
-      console.log(`[pris-types] Warning on ${sliceName}: ${json.warning}`)
+      console.log(`[pris-types/save] Warning on "${sliceName}": ${json.warning}\n`)
     }
-    if (json.err) {
-      console.log(`[pris-types] Error on ${sliceName}: ${json.err}`)
+    else if (json.err) {
+      console.log(`[pris-types/save] Error on "${sliceName}": ${json.err}\n`)
+    } else {
+      console.log(`[pris-types/save] Slice "${sliceName}" was saved🎉\n`)
     }
   } catch(e) {
-    console.error(`[pris-types] ${e}`)
+    console.error(`[pris-types] ${e}\n`)
   }
 }
 
@@ -43,7 +45,7 @@ const processSlice = async (slices, p, port) => {
 
   const slices = getSlices(argv.lib)
   if (doLog) {
-    console.log(`[pris-types/watcher] Loaded with slices: [${Object.keys(slices)}]`)
+    console.log(`[pris-types] Watching slices: [${Object.keys(slices)}]\n`)
   }
 
   const watcher = chokidar.watch(Object.entries(slices).map(([,e]) => e.path))

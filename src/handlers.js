@@ -21,7 +21,7 @@ const extractModel = async (code, filename, { plugins = [], presets = [] } = def
     filename,
     search: ['Model', 'Mocks'],
     useToJs: false,
-    plugins: [[removeImports, { test: 'pris-types' }], ...plugins],
+    plugins: [[removeImports, { test: '.*' }], ...plugins],
     presets,
   })
   if (!validate(Model)) {

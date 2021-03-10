@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const equal = require('deep-equal')
-const { vue: defaultVueConfiguration } = require('babel-extract-named-export/babel')
+const { config: defaultVueConfiguration } = require('babel-extract-named-export/babel/vue')
 const { handlers } = require('../dist')
 
 const reactPreset = require('@babel/preset-react')

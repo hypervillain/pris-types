@@ -1,3 +1,5 @@
+import { PrisTypes } from '../../../dist'
+
 export const Model = PrisTypes.shape({
   __meta: {
     title: 'My Awesome Slice',

@@ -1,0 +1,224 @@
+# Models In Depth (wip)
+
+Writing Prismic Models along with your components, without leaving your favourite IDE is the core of `pris-types`.
+
+Of course, this requires a syntax to learn, that's hopefully not too far from what experienced Prismic users are used to.
+
+## Slice Model
+
+Prismic slice models are JSON files that describe both the shape of the data you receive from Prismic API and how your content editors
+enter content on the platform. They're composed of different parts that I'll try to explain briefly.
+
+#### Meta
+
+First come meta fields that describe your slice and help you understand what you get from the API (that's the role of `id`, which is a `unique-string` that matches your `UniqueString` component).
+
+```javascript
+{
+  id: 'a-unique-id',
+  title: 'The Title that my editors will see',
+  description: 'The description of the said slice',
+  imageUrl: 'A URL of the preview of your component'
+}
+```
+
+#### Variations
+
+Variations are an array of objects that store the different fields of your slice. Each variation includes a small difference to other variations (eg. a second button or a background image).
+Each of them is composed of a non-repeatable `primary` zone, and a repeatable zone called `items`.
+
+```javascript
+{
+  variations: [{
+    id: 'default-variation',
+    primary: {
+      oneBoolean: {
+        type: 'Boolean',
+        config: {
+          placeholder_true: 'true',
+          placeholder_false: 'really false'
+          default_value: true,
+        }
+      }
+    },
+    items: {
+      manyImages: {
+        type: 'Image',
+        config: {
+          label: 'My Label',
+          constraint: {
+            width: "500",
+            height: "800"
+          },
+        },
+      }
+    }
+  }]
+}
+```
+
+## Using pris-types
+
+`pris-types` offers a different syntax that will get converted to a valid JSON model.
+If we take what's been written in the previous code snippet, this would give:
+
+```javascript
+import { PrisTypes } from 'pris-types'
+
+export const Model = PrisTypes.shape({
+  __meta: { title: 'My title', description: 'My description'},
+  defaultVariation: PrisTypes.variation({
+    primary: {
+      oneBoolean: PrisTypes.Boolean
+    },
+    items: {
+      manyImages: PrisTypes.Image({
+        constraint: "500x800"
+      })
+    }
+  })
+})
+
+````
+
+👆 This portion of code offers us some insight.
+
+First, a JS model is an export named `Model` that calls a `PrisTypes.shape` method.
+
+**This method takes a single argument but at least 2 properties:**
+
+#### __meta (required)
+
+This object should contain the title and description of your slice. Note that the `id` is automatically generated,
+based on the name of your slice and that the `imageUrl` is appended by the slice builder.
+
+#### anyCamelCaseKey (required)
+
+Each slice contains at least one variation. `PrisTypes.shape` looks for all first-level keys you defined
+and will transform them to the array of variations the JSON model expects.
+
+So, if you wanted to add a second variation, you would simply:
+
+```javascript
+export const Model = PrisTypes.shape({
+  __meta: { title: 'My title', description: 'My description'},
+  defaultVariation: PrisTypes.variation({
+    primary: {
+      oneBoolean: PrisTypes.Boolean
+    },
+  }),
+  secondVariation: PrisTypes.variation({
+    primary: {
+      description: PrisTypes.RichText
+    },
+  })
+})
+
+````
+
+👆 Something to be noted here is that although PrisTypes helpers are functions, they return
+the correct configuration without actually being called. This is one of the roles of `PrisTypes.variation`!
+
+## Common fields
+
+Because variations are a set of related data shapes, they are usually close to each other.
+To leverage this, `pris-types` offers a simple syntax to **spread fields to all variations**:
+
+```javascript
+export const Model = PrisTypes.shape({
+  __meta: { title: 'My Slice', description: 'A simple slice' },
+  __common: {
+    primary: {
+      title: PrisTypes.Title,
+    },
+    items: {
+      color: PrisTypes.Color
+    }
+  },
+  defaultVariation: PrisTypes.variation({
+    primary: {
+      description: PrisTypes.RichText({ multi: true }),
+    },
+  }),
+  anotherVariation: PrisTypes.variation()
+})
+
+````
+
+As you could probably guess here, fields `title` and `color` will be spread to their respective zones
+in both variations. The `defaultVariation` primary zone now contains 2 fields: `title` and `description`.
+The `anotherVariation` primary zone will also contain a title.
+
+<details>
+  <summary>View JSON result</summary>
+  <pre>
+    {`
+{
+  "id": "common-fields",
+  "title": "My Slice",
+  "description": "A simple slice",
+  "variations": [
+    {
+      "id": "defaultVariation",
+      "primary": {
+        "title": {
+          "type": "StructuredText",
+          "config": {
+            "label": "title Richtext",
+            "single": "heading1,heading2,heading3,heading4,heading5,bold,em",
+            "placeholder": "title field"
+          }
+        },
+        "description": {
+          "type": "StructuredText",
+          "config": {
+            "label": "description Richtext",
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+            "placeholder": "description field"
+          }
+        }
+      },
+      "items": {
+        "color": {
+          "type": "Color",
+          "config": {
+            "label": "color Color",
+            "placeholder": "color value"
+          }
+        }
+      }
+    },
+    {
+      "id": "anotherVariation",
+      "primary": {
+        "title": {
+          "type": "StructuredText",
+          "config": {
+            "label": "title Richtext",
+            "single": "heading1,heading2,heading3,heading4,heading5,bold,em",
+            "placeholder": "title field"
+          }
+        }
+      },
+      "items": {
+        "color": {
+          "type": "Color",
+          "config": {
+            "label": "color Color",
+            "placeholder": "color value"
+          }
+        }
+      }
+    }
+  ]
+}
+    `}
+  </pre>
+</details>
+
+## Next
+
+Alright, you should nw be able to create Models! If you want to go further, check out the [Fields Reference](/fields-ref)
+to learn about available fields or checkout the [Mock Config Guide](/mock-config) to learn how to model your Mocks!
+
+----
